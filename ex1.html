@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <!-- jquery 라이브러리 CDN을 통한 로딩 -->
+    <script src="https://code.jquery.com/jquery-latest.js"></script>
+    <script type="text/javascript">
+      $().ready(function () {
+        $("#msg").text("jquery로 출력하는 메세지");
+      });
+    </script>
+
+    <!-- vue3 라이브러리 CDN을 통한 로딩 -->
+    <script src="https://unpkg.com/vue@3"></script>
+  </head>
+  <body>
+    하이루<br />
+    jquery 출력 결과 : <span id="msg"></span>
+    <hr />
+    vue 출력 1 :
+    <!-- 데이터 바인딩의 기본 형태는 Mustache(텍스트 보간) 구문을 사용 -->
+    <span id="app1">{{msg}}</span>
+    <!-- MVVM 패턴에서 View -->
+    <script>
+      let hi = { msg: "뷰세계 방문이염" }; // 데이터 객체 정의. MVVM 패턴에서 Model
+
+      Vue.createApp({
+        // MVVM 패턴에서 ViewModel
+        // Vue.createApp()에 의해 생성된 객체를 어플리케이션 인스턴스라고 함.
+        data() {
+          return hi;
+        },
+      }).mount("#app1"); // id="app1" 요소에 마운트(DOM 요소에 연결 - 렌더링)
+    </script>
+
+    <hr />
+    vue 출력 2 :
+    <div id="app2">
+        {{message1}}&nbsp;{{message2}}&nbsp;{{message3}}
+        <br>
+        <button @click="updateMessage">메세지 변경</button>
+    </div>
+    <script>
+      // Vue3는 Vue2와 달리 생성자가 아니라 createApp 함수를 이용해 어플리케이션을 인스턴스함
+      const { createApp } = Vue;
+      createApp({
+        data() {
+          return {
+            message1: "하이루 집갈래?",
+            message2: "엉 제발 가게해줘",
+            message3: Math.random() * 9,
+          }
+        },
+        // 라이프 사이클 관련 메소드 일부 확인
+        // 메소드 내에서 실행되는 custom logic을 cycle hook이라고
+        beforeCreate() {
+            console.log('beforeCreate : 인스턴스가 생성되고 나서 가장 처음으로 실행되는 라이프 사이클')
+        },
+        created() {
+            console.log('created :  아직 화면 요소에 인스턴스가 부착되기 전이기 때문에 template 속성에 정의된 돔 요소에 접근하는 코드 구현 불가')
+        },
+        mounted() {
+            console.log('mounted : 지정한 화면 요소에 인스턴스가 부착되고 난 후 호출되는 단계로 template 속성에서 정의한 화면 요소에 접근 가능.')
+        },
+        beforeUpdate() {
+            console.log('beforeUpdate : 지정한 화면 요소에 인스턴스가 부착되고 난 후에 인스턴스 속성들이 화면에 치환됨')
+        },
+        updated() {
+            console.log('updated : beforeUpdate가 끝나고 화면에 다시 그리고 나면 실행되는 단계로 데이터가 변경되고 화면 요소를 제어하고 싶을 때 이 단계에서 로직이 구현됨')
+        },
+        methods: {
+            updateMessage(){
+                this.message1="집가슈";
+                this.message2="진짜로";
+                this.message3=Math.random() * 90;
+            },
+        },
+      }).mount("#app2");
+    </script>
+  </body>
+</html>
