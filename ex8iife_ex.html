@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://unpkg.com/vue@3"></script>
+</head>
+<body>
+<div id="app">
+<h2>성적 관리</h2>
+이름 : <input type="text" v-model="name"><br>
+자바 : <input type="text" v-model.number="java"><br>
+리액트 : <input type="text" v-model.number="react"><br>
+뷰 : <input type="text" v-model.number="vue"><br><br>
+<button @click="btnClick">확인</button>
+
+<h3>입력결과</h3>
+<ul>
+    <li v-for="(res, index) in res" :key="index">{{res.name}} : {{res.java}}, {{res.react}}, {{res.vue}} 총점 : {{res.hap}}</li>
+</ul>
+<h3>전체 통계</h3>
+    <p>인원수 : {{count}}, 전체 총점 : {{whole}}</p>
+</div>
+
+<script>
+const {createApp} = Vue;
+
+createApp({
+    data() {
+        return {
+            name:'',
+            java:0,
+            react:0,
+            vue:0,
+            hap:0,
+            res:[],
+            count:0,
+            whole:0,
+        }
+    },
+    methods: {
+        btnClick(){
+            this.hap = (this.java + this.react + this.vue);
+            this.res.push({
+                name:this.name,
+                java:this.java,
+                react:this.react,
+                vue:this.vue,
+                hap:this.hap,
+            });
+            this.count++;
+            this.whole = this.hap + this.whole;
+            this.name = '';
+            this.java = 0;
+            this.react = 0;
+            this.vue = 0;
+        }
+    },
+}).mount('#app');
+
+</script>
+</body>
+</html>
